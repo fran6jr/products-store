@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { baseUrl } from "./baseUrl";
+
+
+const baseUrl = process.env.REACT_APP_BASEURL
 
 export const useDelete = () => {
   const [error, setError] = useState<boolean>(false);

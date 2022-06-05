@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react"
-import { baseUrl } from "./baseUrl";
 import { Product } from "./types"
 
-const useGetList = (): Product[] => {
+const baseUrl = process.env.REACT_APP_BASEURL
+
+const useProductList = (): Product[] => {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
@@ -19,4 +20,4 @@ const useGetList = (): Product[] => {
 
 }
 
-export default useGetList;
+export default useProductList;

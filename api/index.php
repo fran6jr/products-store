@@ -24,11 +24,8 @@ require PROJECT_ROOT_PATH . "/Controller/Api/ProductController.php";
  
 $objFeedController = new ProductController();
 $strMethodName = $uri[3] . 'Action';
-// echo("this is live \n");
+
 $objFeedController->{$strMethodName}();
 echo("this is the end ");
 
-// list http://localhost/index.php/product/list
-// add http://localhost/index.php/product/add
-// delete http://localhost/index.php/product/delete
 ?>

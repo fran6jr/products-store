@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { Link } from "react-router-dom"
 import './styles.scss'
-import useGetList from "../../hooks/useGetList"
+import useProductList from "../../hooks/useProductList"
 import { useDelete } from "hooks/useDelete"
 import { Product } from "hooks/types"
 
@@ -12,7 +12,7 @@ const Home = () => {
 
   const [selected, setSelected] = useState<string[]>([]);
 
-  const products = useGetList();
+  const products = useProductList();
 
 
   const deleteProducts = useDelete();

@@ -11,10 +11,3 @@ export type Product = {
 }
 
 export type ProductType = "dvd" | "book" | "furniture"
-
-
-export type SelectFields = {
-  inputId: string
-  value?: ProductType
-  text: string
-}

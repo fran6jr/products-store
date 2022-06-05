@@ -9,17 +9,16 @@ import {
   Product,
   ProductType
 } from "hooks/types";
-import useFormFields from "hooks/useFormFields";
-import useSelect from "hooks/useSelect";
+import {formFields as p, selectFields } from "utils/formFields";
 import { Link } from "react-router-dom";
-import usePostAdd from "hooks/usePostAdd";
+import useAddProduct from "hooks/useAddProduct";
+import { useNavigate } from "react-router";
 
 const attributes: Record<string, string> = {
   dvd: "Please, provide size",
   furniture: "Please, provide dimensions in HxWxL format",
   book: "Please, provide weight",
 }
-
 
 
 const Add = () => {
@@ -29,15 +28,15 @@ const Add = () => {
       sku: '',
       name: '',
     })
+  const navigate = useNavigate();
 
   const [showError, setShowError] = useState<boolean>(false);
-  const [globalError, setGlobalError] = useState<string>('');
 
-  const p = useFormFields();
+  
 
   const [productType, setProductType] = useState<ProductType>();
 
-  const postAdd = usePostAdd();
+  const { error, loading, addProduct } = useAddProduct();
 
   useEffect(() => {
     setProduct({
@@ -46,12 +45,6 @@ const Add = () => {
       price: product.price
     });
   }, [productType]);
-
-  // useffect to ensure that global error is cleared when product changes
-  useEffect(() => {
-    setGlobalError('');
-  }
-    , [product]);
 
 
   const handleProductType = (event: any) => {
@@ -65,7 +58,11 @@ const Add = () => {
   }, [product]);
 
 
-
+useEffect(() => {
+    if (loading === false && !error.state) {
+      navigate('/');
+    }
+}, [loading]);
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
@@ -79,19 +76,9 @@ const Add = () => {
 
     console.log(product);
 
-    const error = await postAdd(product);
-
-    if (!error) {
-      console.log('success');
-      window.location.href = '/';
-    }
-
-    setGlobalError(error);
+    addProduct(product);
 
   }
-
-  console.log(globalError);
-
 
   const handleChange = (event: any) => {
     const { name, value, type } = event.target;
@@ -119,9 +106,6 @@ const Add = () => {
       return "Please, provide the data of indicated type";
 
   }
-
-  const selectFields = useSelect();
-
 
   const requiredFields = p.filter(p => !p.type)
   const optionalFields = p.filter(p => p.type === productType)
@@ -153,7 +137,7 @@ const Add = () => {
       <div className="form_container">
         <form id="product_form"
           onSubmit={handleSubmit}>
-          {globalError && <p className="error">{globalError}</p>}
+          {error.state && <p className="error">{error.message}</p>}
           {requiredFields?.map(field => {
             const error = validate(field.name);
             return (
