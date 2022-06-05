@@ -7,9 +7,6 @@ import { Product } from "hooks/types"
 
 const Home = () => {
 
-
-  console.log("begin");
-
   const [selected, setSelected] = useState<string[]>([]);
 
   const products = useProductList();
@@ -27,13 +24,10 @@ const Home = () => {
       const p = prev.slice(index, 1)
       setSelected([...p])
     }
-
-    console.log(selected);
   }
 
   const onMassDelete = async () => {
 
-    console.log(selected);
     if (!selected.length) return;
 
 
@@ -44,7 +38,6 @@ const Home = () => {
         selected.includes(p.sku) &&
           products.splice(products.indexOf(p), 1)
       })
-      console.log("success");
       setSelected([]);
     }
 

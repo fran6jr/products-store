@@ -53,11 +53,6 @@ const Add = () => {
     setShowError(false);
   }
 
-  useEffect(() => {
-    console.log({ product });
-  }, [product]);
-
-
 useEffect(() => {
     if (loading === false && !error.state) {
       navigate('/');
@@ -74,8 +69,6 @@ useEffect(() => {
       return;
     }
 
-    console.log(product);
-
     addProduct(product);
 
   }
@@ -84,8 +77,6 @@ useEffect(() => {
     const { name, value, type } = event.target;
 
     setShowError(false);
-
-    console.log({ type });
 
     setProduct(product => ({
       ...product,

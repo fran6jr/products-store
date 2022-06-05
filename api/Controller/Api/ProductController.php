@@ -14,7 +14,6 @@ class ProductController extends BaseController
                 $intLimit = 100;
                 if (isset($arrQueryStringParams['limit']) && $arrQueryStringParams['limit']) {
                     $intLimit = $arrQueryStringParams['limit'];
-                    echo("GET Try if\n");
                 }
  
                 $arrProducts = $ProductModel->getProducts($intLimit);

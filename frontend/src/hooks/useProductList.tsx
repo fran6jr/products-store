@@ -14,8 +14,6 @@ const useProductList = (): Product[] => {
       .catch((e) => console.log(e));
   }, []);
 
-  console.log({ products });
-
   return products;
 
 }

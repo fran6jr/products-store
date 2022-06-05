@@ -30,36 +30,24 @@ class ProductModel extends Database
         $count = $result[0]["COUNT(*)"];
 
         
-        if (!$price || !$name || !$sku)
+        if (preg_match('/[^A-Za-z0-9]/', $sku || $name || $size || $weight || $height || $width || $length))
+            $error = 'Invalid data format';
+        else if (!$price || !$name || !$sku)
             $error = "Missing required fields";
         else if ($weight && $size)
             $error = "Product cannot have both weight and size";
-        else if ($height && $width && !$length)
-            $error = "Furniture must have length";
-        else if ($height && !$width && $length)
-            $error = "Furniture must have width";
-        else if (!$height && $width && $length)
-            $error = "Furniture must have height";
         else if ($weight && ($height || $width || $length))
             $error = "Product cannot have weight and dimensions";
         else if ($size && ($height || $width || $length))
             $error = "Product cannot have size and dimensions";
         else if (($size || $weight) && ($height || $width || $length))
-            $error = "Product cannot have dimensions, size, and weight";
+            $error = "Product must be of a type";
+        else if (($height || $width || $length) && !($height && $width && $length))
+            $error = "Product must have all dimensions";
         else if (!$weight && !$size && !$height && !$width && !$length)
             $error = "Product must have weight, size, or dimensions";
-        else if ($weight && $weight < 0)
-            $error = "Product weight must be greater than 0";
-        else if ($size && $size < 0)
-            $error = "Product size must be greater than 0";
-        else if ($height && $height < 0)
-            $error = "Product height must be greater than 0";
-        else if ($width && $width < 0)
-            $error = "Product width must be greater than 0";
-        else if ($length && $length < 0)
-            $error = "Product length must be greater than 0";
-        else if ($price < 0)
-            $error = "Product price must be greater than 0";
+        if (($price < 0) || ($weight && $weight < 0) || ($size && $size < 0) || ($height && $height < 0) || ($width && $width < 0) || ($length && $length < 0))
+            $error = "Invalid data - Input of type number must be positive";
         else if ($sku == "")
             $error = "Product SKU cannot be empty";
         else if ($name == "")
@@ -69,7 +57,11 @@ class ProductModel extends Database
 
 
         if ($error)
-            throw new Exception($error);
+        {
+            $this->sendOutput(json_encode(array('error' => 'Error: ' . $error . '!')), 
+                array('Content-Type: application/json', 'HTTP/1.1 500 Internal Server Error')
+            );
+        }
         
         if ($weight) {
             $sql = "INSERT INTO products (sku, name, price, weight) VALUES (?, ?, ?, ?);";
@@ -90,6 +82,20 @@ class ProductModel extends Database
 
     public function removeProducts($skus = [])
     {        
+        $error = "";
+
+        foreach ($skus as $sku) {
+            if (preg_match('/[^A-Za-z0-9]/', $sku))
+            $error = 'Invalid data format';
+        }
+
+        if ($error)
+        {
+            $this->sendOutput(json_encode(array('error' => 'Error: ' . $error . '!')), 
+                array('Content-Type: application/json', 'HTTP/1.1 500 Internal Server Error')
+            );
+        }
+        
         foreach ($skus as $sku) {
             $sql = "DELETE FROM products WHERE sku = ?";
             $params = ["s", $sku];

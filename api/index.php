@@ -2,7 +2,6 @@
 
 header("Access-Control-Allow-Origin: *");
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-    echo "Calling from Hia!";
     header("Access-Control-Allow-Origin: http://localhost:3000");
     header("Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS");
     header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Auth-Token");
@@ -26,6 +25,5 @@ $objFeedController = new ProductController();
 $strMethodName = $uri[3] . 'Action';
 
 $objFeedController->{$strMethodName}();
-echo("this is the end ");
 
 ?>
