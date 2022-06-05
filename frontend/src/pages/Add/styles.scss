@@ -1,0 +1,93 @@
+$myBorder: 1px solid black;
+
+%errorStyle {
+  color: red;
+  font-size: 58%;
+  display: block;
+}
+
+%display-and-Justify {
+  display: flex;
+  justify-content: space-between;
+}
+
+.addproduct {
+  max-width: 1200px;
+  margin: auto;
+  padding: 30px 30px;
+
+  .header {
+    @extend %display-and-Justify;
+    align-items: center;
+    border-bottom: $myBorder;
+    padding-bottom: 10px;
+
+    button {
+      box-shadow: 2px 2px black;
+    }
+
+    .cancel_button {
+      margin-left: 10px;
+    }
+  }
+
+  .footer {
+    border-top: $myBorder;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    right: 30px;
+    left: 30px;
+    bottom: 30px;
+  }
+
+  .form_container {
+    margin-top: 30px;
+
+    label {
+      width: 250px;
+      display: grid;
+      grid-template-columns: 1fr 3fr;
+      margin-top: 10px;
+
+
+    }
+
+    .error {
+      @extend %errorStyle;
+    }
+
+    .product_form {
+      margin-top: 30px;
+      border: $myBorder;
+      padding: 15px;
+      height: fit-content;
+      width: fit-content;
+
+      p {
+        margin-top: 10px;
+        font-size: 13px;
+      }
+
+      .error {
+        @extend %errorStyle;
+        margin-top: auto;
+      }
+
+      label {
+        @extend %display-and-Justify;
+        width: 265px;
+      }
+
+    }
+
+    .select_label {
+      margin-top: 50px;
+      display: block;
+
+      select {
+        margin-left: 20px;
+      }
+    }
+  }
+}

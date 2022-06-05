@@ -1,0 +1,10 @@
+CREATE TABLE products(
+  sku VARCHAR(50) NOT NULL,
+  name VARCHAR(50) NOT NULL,
+  price FLOAT NOT NULL,
+  weight FLOAT NULL,
+  size FLOAT NULL,
+  width FLOAT NULL,
+  height FLOAT NULL,
+  length FLOAT NULL
+);

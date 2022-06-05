@@ -1,0 +1,74 @@
+.home {
+  max-width: 1200px;
+  margin: auto;
+  padding: 30px 30px;
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid black;
+    padding-bottom: 10px;
+
+    button {
+      box-shadow: 2px 2px black;
+    }
+  
+    .delete_button {
+      margin-left: 10px;
+    }
+  }
+
+  .footer {
+    border-top: 1px solid black;
+    margin-top: 30px;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    position: bottom;
+  }
+
+  .list_container {
+    margin-top: 30px;
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    justify-items: center;
+    font-size: 14px;
+
+    .card {
+      border: 1px solid black;
+      height: 160px;
+      width: 210px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      position: relative;
+
+      .delete-checkbox {
+        position: absolute;
+        left: 10px;
+        top: 10px;
+      }
+    }
+  }
+
+  @media screen and (max-width: 930px) {
+    .list_container {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (max-width: 685px) {
+    .list_container {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (max-width: 430px) {
+    .list_container {
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+  }
+}
