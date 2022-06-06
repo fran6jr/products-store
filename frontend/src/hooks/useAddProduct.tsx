@@ -37,7 +37,7 @@ const useAddProduct = () => {
       console.log(JSON.stringify(e));
       setError({ 
         state: true,
-        message: "Product could not be added, please try again or check if product exists"
+        message: "Product could not be added. Please try again or check if product exists"
       });
     }
 
