@@ -32,6 +32,8 @@ class ProductModel extends Database
         
         if (preg_match('/[^A-Za-z0-9]/', $sku || $name || $size || $weight || $height || $width || $length))
             $error = 'Invalid data format';
+        else if($count > 0)
+            $error = "Product exists";
         else if (!$price || !$name || !$sku)
             $error = "Missing required fields";
         else if ($weight && $size)
@@ -52,16 +54,10 @@ class ProductModel extends Database
             $error = "Product SKU cannot be empty";
         else if ($name == "")
             $error = "Product name cannot be empty";
-        else if($count > 0)
-            $error = "Product exists";
 
 
         if ($error)
-        {
-            $this->sendOutput(json_encode(array('error' => 'Error: ' . $error . '!')), 
-                array('Content-Type: application/json', 'HTTP/1.1 500 Internal Server Error')
-            );
-        }
+            this->handleValidationError($error);
         
         if ($weight) {
             $sql = "INSERT INTO products (sku, name, price, weight) VALUES (?, ?, ?, ?);";
@@ -81,21 +77,14 @@ class ProductModel extends Database
     }
 
     public function removeProducts($skus = [])
-    {        
-        $error = "";
-
+    { 
+        if (count($skus) == 0)
+            this->handleValidationError('No products selected');
         foreach ($skus as $sku) {
             if (preg_match('/[^A-Za-z0-9]/', $sku))
-            $error = 'Invalid data format';
+                this->handleValidationError('Invalid data format');
         }
 
-        if ($error)
-        {
-            $this->sendOutput(json_encode(array('error' => 'Error: ' . $error . '!')), 
-                array('Content-Type: application/json', 'HTTP/1.1 500 Internal Server Error')
-            );
-        }
-        
         foreach ($skus as $sku) {
             $sql = "DELETE FROM products WHERE sku = ?";
             $params = ["s", $sku];

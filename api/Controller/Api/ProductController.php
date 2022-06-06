@@ -19,13 +19,13 @@ class ProductController extends BaseController
                 $arrProducts = $ProductModel->getProducts($intLimit);
                 $responseData = json_encode($arrProducts);
             } catch (Error $e) {
-                $strErrorDesc = $e->getMessage().'Something went wrong! Please contact support.';
+                $strErrorDesc = $e->getMessage();
                 $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
             }
         }
         else {
             $strErrorDesc = 'Method not supported';
-            $strErrorHeader = 'HTTP/1.1 422 Unprocessable Entity';
+            $strErrorHeader = 'HTTP/1.1 405 Method Not Allowed';
         }
 
         if (!$strErrorDesc) {
@@ -63,7 +63,7 @@ class ProductController extends BaseController
     
         else {
             $strErrorDesc = 'Method not supported';
-            $strErrorHeader = 'HTTP/1.1 422 Unprocessable Entity';
+            $strErrorHeader = 'HTTP/1.1 405 Method Not Allowed';
         }
 
         if (!$strErrorDesc) {
@@ -97,7 +97,7 @@ class ProductController extends BaseController
         
         else {
             $strErrorDesc = 'Method not supported';
-            $strErrorHeader = 'HTTP/1.1 422 Unprocessable Entity';
+            $strErrorHeader = 'HTTP/1.1 405 Method Not Allowed';
         }
 
         if (!$strErrorDesc) {

@@ -34,6 +34,7 @@ const useAddProduct = () => {
       await response?.json();
     }
     catch (e) {
+      console.log(JSON.stringify(e));
       setError({ 
         state: true,
         message: "Product could not be added, please try again or check if product exists"
