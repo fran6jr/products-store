@@ -64,7 +64,7 @@ const Home = () => {
       <div className="list_container">
         {products.map(product => {
           const { sku, name, price, weight, size, width, height, length } = product
-
+          const priceStr = price? price.toFixed(2) : "N/A"
           return (
             <div
               key={sku}
@@ -79,9 +79,9 @@ const Home = () => {
               />
               <p>{sku}</p>
               <p>{name}</p>
-              <p>{price} $</p>
-              {size && <p>{size} MB</p>}
-              {weight && <p>{weight} KG</p>}
+              <p>{priceStr} $</p>
+              {size && <p>{size.toFixed(2)} MB</p>}
+              {weight && <p>{weight.toFixed(2)} KG</p>}
               {width && <p>Dimension: {`
                 ${height}x${width}x${length}`
               }</p>}
