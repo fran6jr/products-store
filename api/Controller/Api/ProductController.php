@@ -15,7 +15,6 @@ class ProductController extends BaseController
                 if (isset($arrQueryStringParams['limit']) && $arrQueryStringParams['limit']) {
                     $intLimit = $arrQueryStringParams['limit'];
                 }
- 
                 $arrProducts = $ProductModel->getProducts($intLimit);
                 $responseData = json_encode($arrProducts);
             } catch (Error $e) {

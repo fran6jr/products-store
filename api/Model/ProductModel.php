@@ -56,8 +56,10 @@ class ProductModel extends Database
             $error = "Product name cannot be empty";
 
 
-        if ($error)
-            this->handleValidationError($error);
+        if ($error != "")
+            $this->sendOutput(json_encode(array('error' => $error)), 
+                array('Content-Type: application/json', 'HTTP/1.0 400 Bad Request'));
+            
         
         if ($weight) {
             $sql = "INSERT INTO products (sku, name, price, weight) VALUES (?, ?, ?, ?);";
@@ -79,10 +81,12 @@ class ProductModel extends Database
     public function removeProducts($skus = [])
     { 
         if (count($skus) == 0)
-            this->handleValidationError('No products selected');
+            $this->sendOutput(json_encode(array('error' => 'No Products Selected')), 
+                array('Content-Type: application/json', 'HTTP/1.0 400 Bad Request'));
         foreach ($skus as $sku) {
             if (preg_match('/[^A-Za-z0-9]/', $sku))
-                this->handleValidationError('Invalid data format');
+            $this->sendOutput(json_encode(array('error' => 'Invalid data format')), 
+            array('Content-Type: application/json', 'HTTP/1.0 400 Bad Request'));
         }
 
         foreach ($skus as $sku) {

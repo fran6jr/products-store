@@ -70,9 +70,4 @@ class Database
         return false;
     }
 
-    public function handleValidationError ($error = "")
-    {
-        $this->sendOutput(json_encode(array('error' => $error)), 
-                array('Content-Type: application/json', 'HTTP/1.0 400 Bad Request'));
-    }
 }

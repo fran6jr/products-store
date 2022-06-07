@@ -2,14 +2,18 @@
 
 header("Access-Control-Allow-Origin: *");
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-    header("Access-Control-Allow-Origin: http://localhost:3000");
+    
+    $head = array("https://products-store-eta.vercel.app/", "http://localhost:3000");
+    
+    if ((isset($_SERVER['HTTP_ORIGIN'])) && in_array($_SERVER['HTTP_ORIGIN'], $head)) { 
+        header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+    }
+
     header("Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS");
     header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Auth-Token");
-    exit(200);
 }
 
 require __DIR__ . "/inc/bootstrap.php";
-
  
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $uri = explode( '/', $uri );
