@@ -77,7 +77,7 @@ const Home = () => {
                 onChange={() => onSelect(sku)}
                 checked={selected.includes(sku)}
               />
-              <p>{sku}</p>
+              <p>{sku.toUpperCase()}</p>
               <p>{name}</p>
               <p>{priceStr} $</p>
               {size && <p>{size.toFixed(2)} MB</p>}
