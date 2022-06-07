@@ -1,6 +1,6 @@
 <?php
 
-echo 'OK OK OK';
+
 header("Access-Control-Allow-Origin: *");
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     $head = array("https://products-store-eta.vercel.app/", "http://localhost:3000");
