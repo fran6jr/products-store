@@ -21,7 +21,7 @@ const Home = () => {
     if (index === -1) {
       setSelected([...prev, sku])
     } else {
-      const p = prev.splice(index, 1) 
+      const p = prev.splice(index, 1)
       setSelected([...p])
     }
   }
