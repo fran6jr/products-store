@@ -112,7 +112,7 @@ useEffect(() => {
             type="submit"
             form="product_form"
           >
-            SAVE
+            Save
           </button>
 
           <Link to='/'>
@@ -120,7 +120,7 @@ useEffect(() => {
               id='#cancel-btn'
               className="cancel_button"
             >
-              CANCEL
+              Cancel
             </button>
           </Link>
         </div>
