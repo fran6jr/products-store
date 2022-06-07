@@ -1,15 +1,13 @@
 <?php
 
+echo 'OK OK OK';
 header("Access-Control-Allow-Origin: *");
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-    echo 'OK';
     $head = array("https://products-store-eta.vercel.app/", "http://localhost:3000");
     
     if ((isset($_SERVER['HTTP_ORIGIN'])) && in_array($_SERVER['HTTP_ORIGIN'], $head)) { 
         header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
-        echo 'OK OK';
     }
-    echo 'OK OK OK';
     header("Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS");
     header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Auth-Token");
 

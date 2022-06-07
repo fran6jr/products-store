@@ -28,7 +28,6 @@ class ProductModel extends Database
         $params = ["s", $sku];
         $result = $this->select($sql, $params);
         $count = $result[0]["COUNT(*)"];
-
         
         if (preg_match('/[^A-Za-z0-9]/', $sku || $name || $size || $weight || $height || $width || $length))
             $error = 'Invalid data format';
@@ -57,9 +56,7 @@ class ProductModel extends Database
 
 
         if ($error != "")
-            $this->sendOutput(json_encode(array('error' => $error)), 
-                array('Content-Type: application/json', 'HTTP/1.0 400 Bad Request'));
-            
+            throw new Error($error);
         
         if ($weight) {
             $sql = "INSERT INTO products (sku, name, price, weight) VALUES (?, ?, ?, ?);";
@@ -81,12 +78,10 @@ class ProductModel extends Database
     public function removeProducts($skus = [])
     { 
         if (count($skus) == 0)
-            $this->sendOutput(json_encode(array('error' => 'No Products Selected')), 
-                array('Content-Type: application/json', 'HTTP/1.0 400 Bad Request'));
+            throw new Error('No Products Selected');
         foreach ($skus as $sku) {
             if (preg_match('/[^A-Za-z0-9]/', $sku))
-            $this->sendOutput(json_encode(array('error' => 'Invalid data format')), 
-            array('Content-Type: application/json', 'HTTP/1.0 400 Bad Request'));
+            throw new Error('Invalid data format');
         }
 
         foreach ($skus as $sku) {
