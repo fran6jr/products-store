@@ -14,7 +14,7 @@ class ProductController extends BaseController
                 if (isset($arrQueryStringParams['limit']) && $arrQueryStringParams['limit']) {
                     $intLimit = $arrQueryStringParams['limit'];
                 }
-                $arrProducts = $ProductModel->getProducts($intLimit);
+                $arrProducts = $ProductModel->get_Products($intLimit);
                 $responseData = json_encode($arrProducts);
             } catch (Error $e) {
                 $strErrorDesc = $e->getMessage() . 'Something went wrong!';
@@ -51,7 +51,7 @@ class ProductController extends BaseController
 
             try {
                 $ProductModel = new ProductModel();
-                $arrProducts = $ProductModel->addProduct($product);
+                $arrProducts = $ProductModel->set_Product($product);
                 $responseData = json_encode($arrProducts);
             } catch (Error $e) {
                 $strErrorDesc = $e->getMessage();
@@ -85,7 +85,7 @@ class ProductController extends BaseController
             
             try {
                 $ProductModel = new ProductModel();
-                $arrProducts = $ProductModel->removeProducts($products);
+                $arrProducts = $ProductModel->remove_Products($products);
                 $responseData = json_encode($arrProducts);
             } catch (Error $e) {
                 $strErrorDesc = $e->getMessage();
