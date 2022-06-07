@@ -79,9 +79,9 @@ const Home = () => {
               />
               <p>{sku}</p>
               <p>{name}</p>
-              <p>{price?.toFixed(2)} $</p>
-              {size && <p>`{size.toFixed(2)}` MB</p>}
-              {weight && <p>{weight.toFixed(2)} KG</p>}
+              <p>{price} $</p>
+              {size && <p>{size} MB</p>}
+              {weight && <p>{weight} KG</p>}
               {width && <p>Dimension: {`
                 ${height}x${width}x${length}`
               }</p>}
