@@ -56,7 +56,7 @@ class ProductModel extends Database
 
 
         if ($error != "")
-            throw new Error($error);
+            throw new Exception($error);
         
         if ($weight) {
             $sql = "INSERT INTO products (sku, name, price, weight) VALUES (?, ?, ?, ?);";
@@ -78,10 +78,10 @@ class ProductModel extends Database
     public function removeProducts($skus = [])
     { 
         if (count($skus) == 0)
-            throw new Error('No Products Selected');
+            throw new Exception('No Products Selected');
         foreach ($skus as $sku) {
             if (preg_match('/[^A-Za-z0-9]/', $sku))
-            throw new Error('Invalid data format');
+            throw new Exception('Invalid data format');
         }
 
         foreach ($skus as $sku) {
