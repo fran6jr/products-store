@@ -80,7 +80,7 @@ class ProductController extends BaseController
         $strErrorDesc = '';
         $requestMethod = $_SERVER["REQUEST_METHOD"];
         
-        if (strtoupper($requestMethod) == 'DELETE') {
+        if (strtoupper($requestMethod) == 'POST') {
             $products = json_decode(file_get_contents("php://input"));
             
             try {
