@@ -8,7 +8,7 @@ export const useDelete = () => {
 
   const deleteProducts = async (skus: string[]) => {
     const response = await fetch(baseUrl + '/delete', {
-      method: 'POST',
+      method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
       },
