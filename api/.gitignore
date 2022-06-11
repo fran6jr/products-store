@@ -1,0 +1,4 @@
+/vendor/
+Procfile
+composer.json
+composer.lock
