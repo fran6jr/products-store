@@ -14,8 +14,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit (200);
 }
 
-echo "testing";
-
 require __DIR__ . "/inc/bootstrap.php";
  
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
