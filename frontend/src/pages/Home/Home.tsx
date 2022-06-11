@@ -65,7 +65,7 @@ const Home = () => {
         {products.map(product => {
           const { sku, name, price, weight, size, width, height, length } = product
           const priceStr = price? price.toFixed(2) : "N/A"
-          const nameStr = name.charAt(0).toUpperCase() + name.slice(1)
+          const nameStr = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()
           return (
             <div
               key={sku}
