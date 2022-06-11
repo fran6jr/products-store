@@ -65,6 +65,7 @@ const Home = () => {
         {products.map(product => {
           const { sku, name, price, weight, size, width, height, length } = product
           const priceStr = price? price.toFixed(2) : "N/A"
+          const nameStr = name.charAt(0).toUpperCase() + name.slice(1)
           return (
             <div
               key={sku}
@@ -78,7 +79,7 @@ const Home = () => {
                 checked={selected.includes(sku)}
               />
               <p>{sku.toUpperCase()}</p>
-              <p>{name}</p>
+              <p>{nameStr}</p>
               <p>{priceStr} $</p>
               {size && <p>{size.toFixed(2)} MB</p>}
               {weight && <p>{weight.toFixed(2)} KG</p>}
