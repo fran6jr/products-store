@@ -28,9 +28,7 @@ class ProductModel extends Database
         $result = $this->select($sql, $params);
         $count = $result[0]["COUNT(*)"];
         
-        if (preg_match('/[^A-Za-z0-9]/', $sku || $name || $size || $weight || $height || $width || $length))
-            $error = 'Invalid data format';
-        else if($count > 0)
+        if($count > 0)
             $error = "Product exists";
         else if (!$price || !$name || !$sku)
             $error = "Missing required fields";

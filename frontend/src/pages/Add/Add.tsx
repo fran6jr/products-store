@@ -80,7 +80,7 @@ useEffect(() => {
 
     setProduct(product => ({
       ...product,
-      [name]: type === "number" ? parseFloat(value) : value
+      [name]: type === "number" ? parseFloat(value) : value.trim()
     }))
   }
 
