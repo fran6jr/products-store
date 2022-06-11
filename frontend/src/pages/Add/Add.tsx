@@ -29,13 +29,8 @@ const Add = () => {
       name: '',
     })
   const navigate = useNavigate();
-
   const [showError, setShowError] = useState<boolean>(false);
-
-
-
   const [productType, setProductType] = useState<ProductType>();
-
   const { error, loading, addProduct } = useAddProduct();
 
   useEffect(() => {

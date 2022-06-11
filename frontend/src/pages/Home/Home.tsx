@@ -3,7 +3,6 @@ import { Link } from "react-router-dom"
 import './styles.scss'
 import useProductList from "../../hooks/useProductList"
 import { useDelete } from "hooks/useDelete"
-import { Product } from "hooks/types"
 
 const Home = () => {
 
