@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import './styles.scss'
 import useProductList from "../../hooks/useProductList"
@@ -8,11 +8,15 @@ import { Product } from "hooks/types"
 const Home = () => {
 
   const [selected, setSelected] = useState<string[]>([]);
+  const { products, refetch } = useProductList();
+  const { error, loading, deleteProducts } = useDelete();
 
-  const products = useProductList();
-
-
-  const deleteProducts = useDelete();
+  useEffect(() => {
+    if (loading === false && !error) {
+      refetch()
+      setSelected([]);
+    }
+  }, [loading, error, refetch])
 
   const onSelect = (sku: string) => {
     const prev = [...selected]
@@ -27,20 +31,8 @@ const Home = () => {
   }
 
   const onMassDelete = async () => {
-
-    if (!selected.length) return;
-
-
-    const error = await deleteProducts(selected);
-
-    if (!error) {
-      products.map(p => {
-        selected.includes(p.sku) &&
-          products.splice(products.indexOf(p), 1)
-      })
-      setSelected([]);
-    }
-
+    if (selected.length)
+      deleteProducts(selected);
   }
 
   return (

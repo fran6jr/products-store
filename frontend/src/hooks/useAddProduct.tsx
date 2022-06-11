@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { Product } from "./types"
 
-
 const baseUrl = process.env.REACT_APP_BASEURL
-
 
 const useAddProduct = () => {
   const [error, setError] = useState(
@@ -22,7 +20,7 @@ const useAddProduct = () => {
     });
     setLoading(true);
     try {
-      const response = await fetch(baseUrl + "/add",
+      const response = await fetch(`${baseUrl}/add`,
         {
           method: 'POST',
           headers: {
@@ -42,7 +40,6 @@ const useAddProduct = () => {
     }
 
     setLoading(false);
-
   }
 
   return { error, loading, addProduct };

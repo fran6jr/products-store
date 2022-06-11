@@ -11,7 +11,7 @@ const Add = React.lazy(() => import('./pages/Add/Add'));
 const App = () => {
   return (
     <BrowserRouter>
-      <Suspense /*fallback={<p className='loader'> Loading...</p>}*/>
+      <Suspense>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="addproduct" element={<Add />} />

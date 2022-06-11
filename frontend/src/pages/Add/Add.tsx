@@ -9,7 +9,7 @@ import {
   Product,
   ProductType
 } from "hooks/types";
-import {formFields as p, selectFields } from "utils/formFields";
+import { formFields as p, selectFields } from "utils/formFields";
 import { Link } from "react-router-dom";
 import useAddProduct from "hooks/useAddProduct";
 import { useNavigate } from "react-router";
@@ -32,7 +32,7 @@ const Add = () => {
 
   const [showError, setShowError] = useState<boolean>(false);
 
-  
+
 
   const [productType, setProductType] = useState<ProductType>();
 
@@ -53,11 +53,11 @@ const Add = () => {
     setShowError(false);
   }
 
-useEffect(() => {
+  useEffect(() => {
     if (loading === false && !error.state) {
       navigate('/');
     }
-}, [loading]);
+  }, [loading]);
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
@@ -142,7 +142,6 @@ useEffect(() => {
                     step={field.step}
                     value={product[field.name]}
                     onChange={handleChange}
-                  //required
                   />
                   {showError && error
                     && <p className="error">{error}</p>}
@@ -197,9 +196,6 @@ useEffect(() => {
                 <p>{attribute}</p>}
             </div>
           }
-          {/* {globalError &&
-            <p className="error">{globalError}</p>
-          } */}
         </form>
       </div>
       <h5 className="footer">Scandiweb Test assignment</h5>
