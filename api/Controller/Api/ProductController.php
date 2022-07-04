@@ -47,11 +47,11 @@ class ProductController extends BaseController
 
         if (strtoupper($requestMethod) == 'POST') 
         {
-            $product = json_decode(file_get_contents("php://input"));
+            $data = json_decode(file_get_contents("php://input"));
 
             try {
                 $ProductModel = new ProductModel();
-                $arrProducts = $ProductModel->set_Product($product);
+                $arrProducts = $ProductModel->set_Product($data);
                 $responseData = json_encode($arrProducts);
             } catch (Error $e) {
                 $strErrorDesc = $e->getMessage();

@@ -64,7 +64,7 @@ const Add = () => {
       return;
     }
 
-    addProduct(product);
+    addProduct(productType, product);
 
   }
 
