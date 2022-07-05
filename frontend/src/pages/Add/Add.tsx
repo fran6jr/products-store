@@ -64,7 +64,7 @@ const Add = () => {
       return;
     }
 
-    addProduct(productType, product);
+    addProduct(productType as ProductType, product);
 
   }
 
