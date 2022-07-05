@@ -1,4 +1,7 @@
 /vendor/
+<<<<<<< HEAD
+=======
 Procfile
 composer.json
 composer.lock
+>>>>>>> faf9c4cadf017871269f9c0a98a6073fa5cfbde7

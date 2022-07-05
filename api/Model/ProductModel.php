@@ -3,6 +3,7 @@ require_once PROJECT_ROOT_PATH . "/Model/Products.php";
  
 class ProductModel extends Database
 {
+    
     public function get_Products($limit)
     {
         return $this->select("SELECT * FROM products LIMIT ?;", ["i", $limit]);
@@ -29,12 +30,17 @@ class ProductModel extends Database
         return $furniture->insert_Product($product);
     }
 
-    public function set_Product($data)
+    public function set_Product()
     {        
+        $data = json_decode(file_get_contents("php://input"));
         $productType = $data->productType;
         $product = $data->product;
 
+<<<<<<< HEAD
         $setProductType = 'set_' . setucfirst((strtolower($uri[3])));
+=======
+        $setProductType = 'set_' . $uri[3];
+>>>>>>> faf9c4cadf017871269f9c0a98a6073fa5cfbde7
 
         return $this->{$setProductType}($product);
 
@@ -57,5 +63,9 @@ class ProductModel extends Database
 
         return true;
     }
-}
+<<<<<<< HEAD
     
+}
+=======
+}
+>>>>>>> faf9c4cadf017871269f9c0a98a6073fa5cfbde7

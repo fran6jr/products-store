@@ -1,6 +1,7 @@
 <?php
 class ProductController extends BaseController
 {
+    
     public function listAction()
     {
         $strErrorDesc = '';
@@ -47,11 +48,9 @@ class ProductController extends BaseController
 
         if (strtoupper($requestMethod) == 'POST') 
         {
-            $data = json_decode(file_get_contents("php://input"));
-
             try {
                 $ProductModel = new ProductModel();
-                $arrProducts = $ProductModel->set_Product($data);
+                $arrProducts = $ProductModel->set_Product();
                 $responseData = json_encode($arrProducts);
             } catch (Error $e) {
                 $strErrorDesc = $e->getMessage();

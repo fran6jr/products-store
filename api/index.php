@@ -14,6 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit (200);
 }
 
+
 require __DIR__ . "/inc/bootstrap.php";
  
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -25,7 +26,7 @@ if ((isset($uri[2]) && $uri[2] != 'product') || !isset($uri[3])) {
 }
  
 require PROJECT_ROOT_PATH . "/Controller/Api/ProductController.php";
- 
+
 $objFeedController = new ProductController();
 $strMethodName = $uri[3] . 'Action';
 
