@@ -1,5 +1,6 @@
 <?php
 
+echo("Hola");
 
 header("Access-Control-Allow-Origin: *");
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
