@@ -55,11 +55,8 @@ const Home = () => {
 
       <div className="list_container">
         {products.map(product => {
-          const { type, sku, name, price, weight, size, width, height, length } = product
-          const select: Selected = {
-            sku: sku,
-            type: type as ProductType
-          }
+          const { sku, name, price, weight, size, width, height, length } = product
+          
           const priceStr = price? price.toFixed(2) : "N/A"
           return (
             <div
@@ -71,7 +68,7 @@ const Home = () => {
                 name='stuff'
                 className="delete-checkbox"
                 onChange={() => onSelect(sku)}
-                checked={selected.includes(select)}
+                checked={selected.some(s => s.sku === sku)}
               />
               <p>{sku.toUpperCase()}</p>
               <p>{name}</p>
