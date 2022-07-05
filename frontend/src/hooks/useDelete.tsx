@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Selected } from "./types";
+
 
 
 const baseUrl = process.env.REACT_APP_BASEURL
@@ -7,7 +9,7 @@ export const useDelete = () => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState<boolean>()
 
-  const deleteProducts = async (skus: string[]) => {
+  const deleteProducts = async ( selected: Selected [] ) => {
     setError(false);
     setLoading(true)
     try {
@@ -17,7 +19,7 @@ export const useDelete = () => {
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(skus)
+          body: JSON.stringify(selected)
         }
       )
       await response?.json();

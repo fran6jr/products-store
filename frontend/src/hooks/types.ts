@@ -1,4 +1,5 @@
 export type Product = {
+  type?: ProductType
   sku: string
   name: string
   price?: number
@@ -8,6 +9,12 @@ export type Product = {
   height?: number
   length?: number
   [key: string]: any
+}
+
+export type Selected =
+{ 
+  sku: string;
+  type: ProductType
 }
 
 export type ProductType = "dvd" | "book" | "furniture"

@@ -13,7 +13,7 @@ const useAddProduct = () => {
 
   const [loading, setLoading] = useState<boolean>();
 
-  const addProduct = async (productType: ProductType, product: Product) => {
+  const addProduct = async (product: Product) => {
     setError({
       state: false,
       message: ""
@@ -26,7 +26,7 @@ const useAddProduct = () => {
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({productType, product})
+          body: JSON.stringify(product)
         }
       )
       await response?.json();

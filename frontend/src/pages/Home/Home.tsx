@@ -3,10 +3,11 @@ import { Link } from "react-router-dom"
 import './styles.scss'
 import useProductList from "../../hooks/useProductList"
 import { useDelete } from "hooks/useDelete"
+import { ProductType, Selected } from "hooks/types"
 
 const Home = () => {
 
-  const [selected, setSelected] = useState<string[]>([]);
+  const [selected, setSelected] = useState<Selected[]>([]);
   const { products, refetch } = useProductList();
   const { error, loading, deleteProducts } = useDelete();
 
@@ -19,10 +20,10 @@ const Home = () => {
 
   const onSelect = (sku: string) => {
     const prev = [...selected]
-    const index = selected.indexOf(sku)
+    const index = selected.findIndex(s => s.sku === sku)
 
     if (index === -1) {
-      setSelected([...prev, sku])
+      setSelected([...prev, { sku, type: products.find(p => p.sku === sku)?.type as any}])
     } else {
       prev.splice(index, 1)
       setSelected([...prev])
@@ -54,7 +55,11 @@ const Home = () => {
 
       <div className="list_container">
         {products.map(product => {
-          const { sku, name, price, weight, size, width, height, length } = product
+          const { type, sku, name, price, weight, size, width, height, length } = product
+          const select: Selected = {
+            sku: sku,
+            type: type as ProductType
+          }
           const priceStr = price? price.toFixed(2) : "N/A"
           return (
             <div
@@ -66,7 +71,7 @@ const Home = () => {
                 name='stuff'
                 className="delete-checkbox"
                 onChange={() => onSelect(sku)}
-                checked={selected.includes(sku)}
+                checked={selected.includes(select)}
               />
               <p>{sku.toUpperCase()}</p>
               <p>{name}</p>
