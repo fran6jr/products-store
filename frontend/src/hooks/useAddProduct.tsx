@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Product } from "./types"
+import { Product, ProductType } from "./types"
 
 const baseUrl = process.env.REACT_APP_BASEURL
 
@@ -13,7 +13,7 @@ const useAddProduct = () => {
 
   const [loading, setLoading] = useState<boolean>();
 
-  const addProduct = async (product: Product) => {
+  const addProduct = async (productType: ProductType, product: Product) => {
     setError({
       state: false,
       message: ""
@@ -26,7 +26,7 @@ const useAddProduct = () => {
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(product)
+          body: JSON.stringify({productType, product})
         }
       )
       await response?.json();
