@@ -36,7 +36,7 @@ class ProductModel extends Database
         $productType = $data->productType;
         $product = $data->product;
 
-        $setProductType = 'set_' . $productType;
+        $setProductType = 'set_' . ucfirst(strtolower($productType));
 
         return $this->{$setProductType}($product);
 
