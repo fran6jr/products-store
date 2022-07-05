@@ -1,7 +1,5 @@
 <?php
 
-echo("Hola");
-
 header("Access-Control-Allow-Origin: *");
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     $head = array("https://products-store-eta.vercel.app/", "http://localhost:3000");
@@ -15,9 +13,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit (200);
 }
 
-
 require __DIR__ . "/inc/bootstrap.php";
- 
+
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $uri = explode( '/', $uri );
  

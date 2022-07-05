@@ -7,7 +7,7 @@ abstract class Product extends Database
 
     public $error;
     
-    abstract public function insert_Product();
+    abstract public function insert_Product($prod);
 
     abstract public function validate();
 
