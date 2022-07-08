@@ -13,37 +13,31 @@ class Database
             }
         } catch (Exception $e) {
             throw new Exception($e->getMessage());   
-        }           
+        }  
     }
  
-    public function select($query = "", $params = [])
+    public function select($query = "", $params = [], $get = false)
     {
         try {
             $stmt = $this->executeStatement( $query , $params);
-            $product = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);               
-            $stmt->close();
-
-            return $product;
+            if ($get)
+            {
+                $stmt->close();
+                return true;
+            }
+            else
+            {
+                $product = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);               
+                $stmt->close();
+                return $product;
+            }
+            
         } catch(Exception $e) {
             throw New Exception( $e->getMessage() );
         }
         return false;
     }
 
-    public function createRemove($query = "", $params = []) {        
-        
-        try {
-            $stmt = $this->executeStatement( $query , $params);
-            $stmt->close();
-
-            return true;
-        } catch(Exception $e) {
-            throw New Exception( $e->getMessage() );
-        }
-
-        return false;
-    }
- 
     private function executeStatement($query = "", $params = [])
     {
         try {

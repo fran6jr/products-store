@@ -1,60 +1,62 @@
 <?php
-require_once PROJECT_ROOT_PATH . "/Model/Products.php";
+require_once PROJECT_ROOT_PATH . "/Model/Database.php";
  
-class ProductModel extends Database
+abstract class ProductModel extends Database
 {
 
-    public function get_Products($limit)
+    protected string $sku;
+    protected string $name;
+    protected float $price;
+    protected string $error;
+    protected $params = array();
+    private $sql = "INSERT INTO products (sku, name, price) VALUES (?, ?, ?, ?);";
+    
+    abstract protected function validate();
+
+    abstract public function setProduct($product);
+
+    abstract public function getProducts();
+
+    abstract public static function filter($var);
+
+    abstract public function delete($skus = []);
+
+    protected function check_error()
     {
-        return $this->select("SELECT * FROM products LIMIT ?;", ["i", $limit]);
+        if (isset($this->error))
+            throw new Exception($this->error);
     }
 
-    private function set_Book($product)
+    protected function check()
     {
-        $book = new Book();
-        
-        return $book->insert_Product($product);
+        $this->error = '';
+
+        $sql = "SELECT COUNT(*) FROM products WHERE sku = ?";
+        $params = ["s", $sku];
+        $result = $this->select($sql, $params);
+        $count = $result[0]["COUNT(*)"];
+
+        if($count > 0)
+            $this->error = "Product exists";
+        else if (!isset($this->sku))
+            $this->error = "Product SKU cannot be empty";
+        else if (!isset($this->name) || ($this->price < 0))
+            $this->error = "Product name cannot be empty and must be a positive number";
+        else if (!isset($this->price) || !isset($this->name) || !isset($this->sku))
+            $this->error = "Missing required fields";
+
+        $this->check_error();
     }
 
-    private function set_Dvd($product)
+    private function preSelect($sql = '', $productParams = [])
     {
-        $dvd = new Dvd();
-        
-        return $dvd->insert_Product($product);
-    }
+        $params = [$this->params, $productParams];
+        $queries = [$this->sql, $sql];
 
-    private function set_Furniture($product)
-    {
-        $furniture = new Furniture();
-        
-        return $furniture->insert_Product($product);
-    }
-
-    public function set_Product()
-    {        
-        $data = json_decode(file_get_contents("php://input"));
-        $productType = $data->productType;
-        $product = $data->product;
-
-        $setProductType = 'set_' . ucfirst(strtolower($productType));
-
-        return $this->{$setProductType}($product);
-
-    }
-
-    public function remove_Products($skus = [])
-    { 
-        if (count($skus) == 0)
-            throw new Exception('No Products Selected');
-        foreach ($skus as $sku) {
-            if (preg_match('/[^A-Za-z0-9]/', $sku))
-            throw new Exception('Invalid data format');
-        }
-
-        foreach ($skus as $sku) {
-            $sql = "DELETE FROM products WHERE sku = ?";
-            $params = ["s", $sku];
-            $this->createRemove($sql, $params);
+        foreach ($queries as $index => $query)
+        {
+            $param = $params[$index];
+            $this->select($query, $param, true);
         }
 
         return true;

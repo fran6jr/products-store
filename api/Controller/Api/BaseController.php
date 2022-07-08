@@ -33,4 +33,41 @@ class BaseController
 
         exit;
     }
+
+    protected function ok($data)
+    {
+        header_remove('Set-Cookie');
+
+        header('Content-Type: application/json');
+        header('HTTP/1.1 200 OK');
+
+        echo $data;
+
+        exit;
+    }
+
+    protected function notFound($data)
+    {
+        header_remove('Set-Cookie');
+
+        header('Content-Type: application/json');
+        header('HTTP/1.1 405 Method Not Allowed');
+
+        echo $data;
+
+        exit;
+    }
+
+    protected function serverError($data)
+    {
+        header_remove('Set-Cookie');
+
+        header('Content-Type: application/json');
+        header('HTTP/1.1 500 Internal Server Error');
+
+        echo $data;
+
+        exit;
+    }
+
 }

@@ -1,111 +1,103 @@
 <?php
+
+require_once PROJECT_ROOT_PATH . "/Controller/Api/BaseController.php";
+
 class ProductController extends BaseController
 {
-    
-    public function listAction()
+    public $mappedClasses = array();
+
+    public function __construct()
+    {
+        $mappedClasses = array(
+            'Book' => Book,
+            'Furniture' => Furniture,
+            'DVD' => DVD
+        );   
+    }
+
+    public function list()
     {
         $strErrorDesc = '';
         $requestMethod = $_SERVER["REQUEST_METHOD"];
         $arrQueryStringParams = $this->getQueryStringParams();
  
-        if (strtoupper($requestMethod) == 'GET') {
-            try {
-                $ProductModel = new ProductModel();
-                $intLimit = 100;
-                if (isset($arrQueryStringParams['limit']) && $arrQueryStringParams['limit']) {
-                    $intLimit = $arrQueryStringParams['limit'];
-                }
-                $arrProducts = $ProductModel->get_Products($intLimit);
-                $responseData = json_encode($arrProducts);
-            } catch (Error $e) {
-                $strErrorDesc = $e->getMessage() . 'Something went wrong!';
-                $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
+        if (strtoupper($requestMethod) != 'GET') {
+            $this->notFound(json_encode(array('error' => 'Method not supported')));
+            return;
+        }
+
+        try {
+            $arrProducts = '';
+            foreach($this->mappedClasses as $key => $product) {
+                $ProductModel = new $product;
+                array_push($arrProducts, ...$ProductModel->getProducts());
             }
-        }
-        else {
-            $strErrorDesc = 'Method not supported';
-            $strErrorHeader = 'HTTP/1.1 405 Method Not Allowed';
-        }
-
-        if (!$strErrorDesc) {
-
-            $this->sendOutput(
-                $responseData,
-                array('Content-Type: application/json', 'HTTP/1.1 200 OK')
-            );
-        } else {
-            $this->sendOutput(json_encode(array('error' => $strErrorDesc)), 
-                array('Content-Type: application/json', $strErrorHeader)
-            );
+            $responseData = json_encode($arrProducts);
+            $this->ok($responseData);
+        } catch (Error $e) {
+            $this->serverError(json_encode(array('error' => 'Something went wrong!')));
         }
         
     }
 
-    public function addAction() {
+    public function add() {
         $strErrorDesc = '';
         $requestMethod = $_SERVER["REQUEST_METHOD"];
         $arrQueryStringParams = $this->getQueryStringParams();
 
-        if (strtoupper($requestMethod) == 'POST') 
-        {
-            try {
-                $ProductModel = new ProductModel();
-                $arrProducts = $ProductModel->set_Product();
-                $responseData = json_encode($arrProducts);
-            } catch (Error $e) {
-                $strErrorDesc = $e->getMessage();
-                $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
-            }  
+        if (strtoupper($requestMethod) != 'POST') {
+            $this->notFound(json_encode(array('error' => 'Method not supported')));
+            return;
+        }
+
+        try {
+            $product = json_decode(file_get_contents("php://input"));
+
+            $productType = $mappedClasses[$product->productType];
+
+            $ProductModel = new $productType();
+            $arrProducts = $ProductModel->insert_product($product);
+
+            $responseData = json_encode($arrProducts);
+            $this->ok($responseData);
+        } catch (Error $e) {
+            $this->serverError(json_encode(array('error' => 'Something went wrong!')));
         }
     
-        else {
-            $strErrorDesc = 'Method not supported';
-            $strErrorHeader = 'HTTP/1.1 405 Method Not Allowed';
-        }
-
-        if (!$strErrorDesc) {
-            $this->sendOutput(
-                $responseData,
-                array('Content-Type: application/json', 'HTTP/1.1 200 OK')
-            );
-        } else {
-            $this->sendOutput(json_encode(array('error' => $strErrorDesc)), 
-                array('Content-Type: application/json', $strErrorHeader)
-            );
-        }
     }
 
-    public function deleteAction() {
+    public function delete() {
+        
         $strErrorDesc = '';
         $requestMethod = $_SERVER["REQUEST_METHOD"];
         
-        if (strtoupper($requestMethod) == 'DELETE') {
-            $products = json_decode(file_get_contents("php://input"));
-            
-            try {
-                $ProductModel = new ProductModel();
-                $arrProducts = $ProductModel->remove_Products($products);
-                $responseData = json_encode($arrProducts);
-            } catch (Error $e) {
-                $strErrorDesc = $e->getMessage();
-                $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
-            }
-        }
-        
-        else {
-            $strErrorDesc = 'Method not supported';
-            $strErrorHeader = 'HTTP/1.1 405 Method Not Allowed';
+        if (strtoupper($requestMethod) != 'DELETE') {
+            $this->notFound(json_encode(array('error' => 'Method not supported')));
+            return;
         }
 
-        if (!$strErrorDesc) {
-            $this->sendOutput(
-                $responseData,
-                array('Content-Type: application/json', 'HTTP/1.1 200 OK')
-            );
-        } else {
-            $this->sendOutput(json_encode(array('error' => $strErrorDesc)), 
-                array('Content-Type: application/json', $strErrorHeader)
-            );
+        $products = json_decode(file_get_contents("php://input"));
+        
+        $sortedProducts = [];
+
+        foreach ($this->mappedClasses as $key => $ProductModel)
+        {
+            array_push($sortedProducts, array_filter($products, "$ProductModel::filter"));
+        }
+
+        try {
+            foreach($sortedProducts as $sorted) 
+            {
+                $type = $sorted[0]->type;
+                $skus = array_column($products, 'sku');
+                $ProductModel = new $this->mappedClasses[$type];
+                $ProductModel->delete($skus);
+            }
+
+            $responseData = json_encode($arrProducts);
+            $this->ok($responseData);
+        } catch (Error $e) {
+            $this->serverError(json_encode(array('error' => 'Something went wrong!')));
         }
 
     }

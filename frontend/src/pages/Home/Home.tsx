@@ -3,11 +3,11 @@ import { Link } from "react-router-dom"
 import './styles.scss'
 import useProductList from "../../hooks/useProductList"
 import { useDelete } from "hooks/useDelete"
-import { ProductType, Selected } from "hooks/types"
+import { Selected } from "hooks/types"
 
 const Home = () => {
 
-  const [selected, setSelected] = useState<Selected[]>([]);
+  const [ selected, setSelected ] = useState<Selected[]>([]);
   const { products, refetch } = useProductList();
   const { error, loading, deleteProducts } = useDelete();
 

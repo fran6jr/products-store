@@ -35,6 +35,7 @@ const Add = () => {
 
   useEffect(() => {
     setProduct({
+      type: productType,
       sku: product.sku,
       name: product.name,
       price: product.price

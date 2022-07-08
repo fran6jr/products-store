@@ -1,4 +1,4 @@
 <?php
-require_once PROJECT_ROOT_PATH . "/Model/Products/Book.php";
-require_once PROJECT_ROOT_PATH . "/Model/Products/DVD.php";
-require_once PROJECT_ROOT_PATH . "/Model/Products/Furniture.php";
+require_once PROJECT_ROOT_PATH . "/Model/ProductModel/Book.php";
+require_once PROJECT_ROOT_PATH . "/Model/ProductModel/DVD.php";
+require_once PROJECT_ROOT_PATH . "/Model/ProductModel/Furniture.php";
