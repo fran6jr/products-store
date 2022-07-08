@@ -20,7 +20,7 @@ class Furniture extends Product
     
     public function getProducts()//work on this
     {
-        $sql = "SELECT f.sku, products.name, products.price, f.height, f.width, f.length FROM products INNER JOIN furniture f ON products.sku = f.sku WHERE product.productType = 'Furniture';";
+        $sql = "SELECT f.sku, products.name, products.price, f.height, f.width, f.length FROM products INNER JOIN furniture f ON products.sku = f.sku WHERE product.type = 'Furniture';";
         return $this->select($sql);
     }
 

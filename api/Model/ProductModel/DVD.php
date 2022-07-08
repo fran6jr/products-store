@@ -18,7 +18,7 @@ class DVD extends Product
     
     public function getProducts()//work on this
     {
-        $sql = "SELECT d.sku, products.name, products.price, d.size FROM products INNER JOIN dvd d ON products.sku = d.sku WHERE product.productType = 'DVD';";
+        $sql = "SELECT d.sku, products.name, products.price, d.size FROM products INNER JOIN dvd d ON products.sku = d.sku WHERE product.type = 'DVD';";
         return $this->select($sql);
     }
     

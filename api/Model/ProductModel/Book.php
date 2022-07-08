@@ -17,7 +17,7 @@ class Book extends ProductModel
     
     public function getProducts()
     {
-        $sql = "SELECT b.sku, products.name, products.price, b.weight FROM products INNER JOIN book b ON products.sku = b.sku WHERE product.productType = 'book';";
+        $sql = "SELECT b.sku, products.name, products.price, b.weight FROM products INNER JOIN book b ON products.sku = b.sku WHERE product.type = 'book';";
         return $this->select($sql);
     }
 
