@@ -17,7 +17,7 @@ class Book extends ProductModel
     
     public function getProducts()
     {
-        $sql = "SELECT b.sku, products.name, products.price, b.weight FROM products INNER JOIN book b ON products.sku = b.sku WHERE product.type = 'book';";
+        $sql = "SELECT p.sku, p.name, p.price, p.type, b.weight FROM products p INNER JOIN book b ON b.sku = p.sku WHERE p.type = 'book';";
         return $this->select($sql);
     }
 
@@ -27,14 +27,14 @@ class Book extends ProductModel
     }
 
     public function setProduct($product)
-    {        
-        $this->$sku = $product->sku;
+    {   
+        $this->sku = $product->sku;
         $this->name = $product->name;
         $this->price = $product->price;
+        $this->type = $product->type;
         $this->weight = $product->weight;
-        $filler = "i";
-        $this->params = [$filler, $this->sku, $this->name, $this->price];
-        $productParams = [$filler, $this->sku, $this->weight];
+        $this->params = ["ssss", $this->sku, $this->name, $this->price, $this->type];
+        $productParams = ["ss", $this->sku, $this->weight];
         
         $sql = "INSERT INTO book (sku, weight) VALUES (?, ?);";
 

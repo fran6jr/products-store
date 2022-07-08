@@ -17,7 +17,7 @@ class DVD extends ProductModel
     
     public function getProducts()//work on this
     {
-        $sql = "SELECT d.sku, products.name, products.price, d.size FROM products INNER JOIN dvd d ON products.sku = d.sku WHERE product.type = 'DVD';";
+        $sql = "SELECT p.sku, p.name, p.price, p.type, d.size FROM products p INNER JOIN dvd d ON d.sku = p.sku WHERE p.type = 'DVD';";
         return $this->select($sql);
     }
     
@@ -28,13 +28,13 @@ class DVD extends ProductModel
 
     public function setProduct($product)
     {
-        $this->$sku = $product->sku;
+        $this->sku = $product->sku;
         $this->name = $product->name;
         $this->price = $product->price;
+        $this->type = $product->type;
         $this->size = $product->size;
-        $filler = "i";
-        $this->params = [$filler, $this->sku, $this->name, $this->price];
-        $productParams = [$filler, $this->sku, $this->size];
+        $this->params = ["ssss", $this->sku, $this->name, $this->price, $this->type];
+        $productParams = ["ss", $this->sku, $this->size];
         
         $sql = "INSERT INTO dvd (sku, size) VALUES (?, ?);";
 

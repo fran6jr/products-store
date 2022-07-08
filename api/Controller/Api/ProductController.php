@@ -8,7 +8,7 @@ class ProductController extends BaseController
 
     public function __construct()
     {
-        $mappedClasses = array(
+        $this->mappedClasses = array(
             'Book' => Book,
             'Furniture' => Furniture,
             'DVD' => DVD
@@ -27,11 +27,13 @@ class ProductController extends BaseController
         }
 
         try {
-            $arrProducts = '';
+            $arrProducts = [];
             foreach($this->mappedClasses as $key => $product) {
-                require_once PROJECT_ROOT_PATH . "/"."Model/". $key .".php";
-                $ProductModel = new $product;
-                array_push($arrProducts, ...$ProductModel->getProducts());
+                require_once PROJECT_ROOT_PATH . "/"."Model/ProductModel/". $product .".php";
+                $ProductModel = new $product();
+                $result = $ProductModel->getProducts();
+                $merge = array_merge($arrProducts, $result);
+                $arrProducts = $merge;
             }
             $responseData = json_encode($arrProducts);
             $this->ok($responseData);
@@ -54,11 +56,12 @@ class ProductController extends BaseController
         try {
             $product = json_decode(file_get_contents("php://input"));
 
-            $productType = $mappedClasses[$product->productType];
-            require_once PROJECT_ROOT_PATH . "/"."Model/". $product->productType .".php";
+            $productType = $this->mappedClasses[$product->type];
+            require_once PROJECT_ROOT_PATH . "/"."Model/ProductModel/". $productType .".php";
             $ProductModel = new $productType();
-            $arrProducts = $ProductModel->insert_product($product);
-
+            
+            $arrProducts = $ProductModel->setProduct($product);
+            echo "After arr Product  .";
             $responseData = json_encode($arrProducts);
             $this->ok($responseData);
         } catch (Error $e) {
@@ -91,8 +94,8 @@ class ProductController extends BaseController
             {
                 $type = $sorted[0]->type;
                 $skus = array_column($products, 'sku');
-                require_once PROJECT_ROOT_PATH . "/"."Model/". $type .".php";
-                $ProductModel = new $this->mappedClasses[$type];
+                require_once PROJECT_ROOT_PATH . "/"."Model/ProductModel/". $type .".php";
+                $ProductModel = new $this->mappedClasses[$type]();
                 $ProductModel->delete($skus);
             }
 
