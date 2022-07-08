@@ -4,10 +4,10 @@ require_once PROJECT_ROOT_PATH . "/Model/Database.php";
 abstract class ProductModel extends Database
 {
 
-    protected string $sku;
-    protected string $name;
-    protected float $price;
-    protected string $error;
+    protected $sku;
+    protected $name;
+    protected $price;
+    protected $error;
     protected $params = array();
     private $sql = "INSERT INTO products (sku, name, price) VALUES (?, ?, ?, ?);";
     

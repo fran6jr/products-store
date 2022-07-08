@@ -29,6 +29,7 @@ class ProductController extends BaseController
         try {
             $arrProducts = '';
             foreach($this->mappedClasses as $key => $product) {
+                require_once PROJECT_ROOT_PATH . "/"."Model/". $key .".php";
                 $ProductModel = new $product;
                 array_push($arrProducts, ...$ProductModel->getProducts());
             }
@@ -54,7 +55,7 @@ class ProductController extends BaseController
             $product = json_decode(file_get_contents("php://input"));
 
             $productType = $mappedClasses[$product->productType];
-
+            require_once PROJECT_ROOT_PATH . "/"."Model/". $product->productType .".php";
             $ProductModel = new $productType();
             $arrProducts = $ProductModel->insert_product($product);
 
@@ -90,6 +91,7 @@ class ProductController extends BaseController
             {
                 $type = $sorted[0]->type;
                 $skus = array_column($products, 'sku');
+                require_once PROJECT_ROOT_PATH . "/"."Model/". $type .".php";
                 $ProductModel = new $this->mappedClasses[$type];
                 $ProductModel->delete($skus);
             }

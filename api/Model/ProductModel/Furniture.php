@@ -1,8 +1,7 @@
 <?php
 require_once PROJECT_ROOT_PATH . "/Model/ProductModel.php";
 
-
-class Furniture extends Product
+class Furniture extends ProductModel
 {
     private $height;
     private $width;

@@ -1,8 +1,7 @@
 <?php
 require_once PROJECT_ROOT_PATH . "/Model/ProductModel.php";
 
-
-class DVD extends Product
+class DVD extends ProductModel
 {
     private $size;
 
