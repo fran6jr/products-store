@@ -36,6 +36,7 @@ class Database
         try {
             $stmt = $this->executeStatement( $query , $params);              
             $stmt->close();
+
         } catch(Exception $e) {
             throw New Exception( $e->getMessage() );
         }
@@ -46,6 +47,7 @@ class Database
         try {
             $stmt = $this->executeStatement( $query , $params);              
             $stmt->close();
+
         } catch(Exception $e) {
             throw New Exception( $e->getMessage() );
         }
