@@ -7,53 +7,45 @@ class Furniture extends ProductModel
     private $width;
     private $length;
 
+    public function __construct($product) {
+        parent::__construct();
+        $this->sku = isset($product->sku) ? $product->sku : '';
+        $this->type = 'Furniture';
+        $this->name = isset($product->name) ? $product->name : '';
+        $this->price = isset($product->price) ? $product->price : null;
+        $this->height = isset($product->height) ? $product->height : null;
+        $this->width = isset($product->width) ? $product->width : null;
+        $this->length = isset($product->length) ? $product->length : null;
+        
+    }
+
     protected function validate()
     {
-        $this->check();
+        $error = parent::validate();
+        if ($error != false)
+            return $error;
 
         if (!isset($this->height) || !isset($this->width) || !isset($this->length))
             $this->error = "Product must have all dimensions";
 
-        $this->check_error();
+        return false;
     }
     
-    public function getProducts()
-    {
+    public function getProducts() {
+
         $sql = "SELECT p.sku, p.name, p.price, p.type, f.height, f.width, f.length FROM products p INNER JOIN furniture f ON f.sku = p.sku WHERE p.type = 'Furniture';";
         return $this->select($sql);
     }
-
-    public static function filter($var)
-    {
-        return($var->type == 'Furniture');
-    }
     
-    public function setProduct($product)
-    {
-        $this->sku = $product->sku;
-        $this->name = $product->name;
-        $this->price = $product->price;
-        $this->type = $product->type;
-        $this->height = $product->height;
-        $this->width = $product->width;
-        $this->length = $product->length;
-        $this->params = ["iiii", $this->sku, $this->name, $this->price, $this->type];
-        $productParams = ["iiii", $this->sku, $this->height, $this->width, $this->length];
-        
+    public function setProduct() {
+
+        $error = $this->validate();
+        if ($error != false)
+            throw new Exception($error);
+
         $sql = "INSERT INTO furniture (sku, height, width, length) VALUES (?, ?, ?, ?);";
+        $param = ["ssss", $this->sku, $this->height, $this->width, $this->length];
 
-        $this->validate();
-        return $this->preSelect($sql, $productParams);
-    }
-
-    public function delete($skus = [])
-    { 
-        foreach ($skus as $sku) {
-            $sql = "DELETE FROM products, furniture WHERE sku = ?";
-            $params = ["s", $sku];
-            $this->select($sql, $params, true);
-        }
-
-        return true;
+        return $this->save($sql, $param);
     }
 }

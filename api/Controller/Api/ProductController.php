@@ -9,17 +9,15 @@ class ProductController extends BaseController
     public function __construct()
     {
         $this->mappedClasses = array(
-            'Book' => Book,
-            'Furniture' => Furniture,
-            'DVD' => DVD
+            'Book' => 'Book',
+            'DVD' => 'DVD',
+            'Furniture' => 'Furniture'
         );   
     }
 
     public function list()
     {
-        $strErrorDesc = '';
         $requestMethod = $_SERVER["REQUEST_METHOD"];
-        $arrQueryStringParams = $this->getQueryStringParams();
  
         if (strtoupper($requestMethod) != 'GET') {
             $this->notFound(json_encode(array('error' => 'Method not supported')));
@@ -30,7 +28,7 @@ class ProductController extends BaseController
             $arrProducts = [];
             foreach($this->mappedClasses as $key => $product) {
                 require_once PROJECT_ROOT_PATH . "/"."Model/ProductModel/". $product .".php";
-                $ProductModel = new $product();
+                $ProductModel = new $product('');
                 $result = $ProductModel->getProducts();
                 $merge = array_merge($arrProducts, $result);
                 $arrProducts = $merge;
@@ -44,9 +42,7 @@ class ProductController extends BaseController
     }
 
     public function add() {
-        $strErrorDesc = '';
         $requestMethod = $_SERVER["REQUEST_METHOD"];
-        $arrQueryStringParams = $this->getQueryStringParams();
 
         if (strtoupper($requestMethod) != 'POST') {
             $this->notFound(json_encode(array('error' => 'Method not supported')));
@@ -58,12 +54,9 @@ class ProductController extends BaseController
 
             $productType = $this->mappedClasses[$product->type];
             require_once PROJECT_ROOT_PATH . "/"."Model/ProductModel/". $productType .".php";
-            $ProductModel = new $productType();
-            
-            $arrProducts = $ProductModel->setProduct($product);
-            echo "After arr Product  .";
-            $responseData = json_encode($arrProducts);
-            $this->ok($responseData);
+            $productModel = new $productType($product);
+            $productModel->setProduct();
+            $this->ok('');
         } catch (Error $e) {
             $this->serverError(json_encode(array('error' => 'Something went wrong!')));
         }
@@ -72,7 +65,6 @@ class ProductController extends BaseController
 
     public function delete() {
         
-        $strErrorDesc = '';
         $requestMethod = $_SERVER["REQUEST_METHOD"];
         
         if (strtoupper($requestMethod) != 'DELETE') {
@@ -84,23 +76,34 @@ class ProductController extends BaseController
         
         $sortedProducts = [];
 
-        foreach ($this->mappedClasses as $key => $ProductModel)
+        foreach ($this->mappedClasses as $productType)
         {
-            array_push($sortedProducts, array_filter($products, "$ProductModel::filter"));
+            $arr = array_filter(
+                    $products, 
+                    function ($product) use ($productType) {
+                        return $product->type == $productType;
+                    }
+                );
+            $sortedProducts[] = array_values($arr);
         }
 
-        try {
-            foreach($sortedProducts as $sorted) 
-            {
-                $type = $sorted[0]->type;
-                $skus = array_column($products, 'sku');
-                require_once PROJECT_ROOT_PATH . "/"."Model/ProductModel/". $type .".php";
-                $ProductModel = new $this->mappedClasses[$type]();
-                $ProductModel->delete($skus);
+        $sortedProducts = array_values(array_filter(
+            $sortedProducts,
+            function ($sorted) {
+                return count($sorted) > 0;
             }
+        ));
 
-            $responseData = json_encode($arrProducts);
-            $this->ok($responseData);
+        try {
+            foreach($sortedProducts as $key => $sorted) 
+            {
+                $type = $sorted[$key]->type;
+                $skus = array_column($sorted, 'sku');
+                require_once PROJECT_ROOT_PATH . "/"."Model/ProductModel/". $type .".php";
+                $ProductModel = new $this->mappedClasses[$type]($type);
+                $ProductModel->deleteProducts($skus);
+            }
+            $this->ok('');
         } catch (Error $e) {
             $this->serverError(json_encode(array('error' => 'Something went wrong!')));
         }

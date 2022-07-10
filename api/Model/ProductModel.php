@@ -3,65 +3,40 @@ require_once PROJECT_ROOT_PATH . "/Model/Database.php";
  
 abstract class ProductModel extends Database
 {
-
     protected $sku;
     protected $name;
     protected $price;
-    protected $error;
-    protected $params = array();
-    private $sql = "INSERT INTO products (sku, name, price, type) VALUES (?, ?, ?, ?);";
-    
-    abstract protected function validate();
-
-    abstract public function setProduct($product);
+    protected $type;
 
     abstract public function getProducts();
-
-    abstract public static function filter($var);
-
-    abstract public function delete($skus = []);
-
-    protected function check_error()
-    {
-        if (isset($this->error) && $this->error != "")
-            throw new Exception($this->error);
-    }
-
-    protected function check()
-    {
-        $this->error = '';
-
-        $sql = "SELECT COUNT(*) FROM products WHERE sku = ?";
-        $params = ["s", $this->sku];
-        $result = $this->select($sql, $params);
-        $count = $result[0]["COUNT(*)"];
-
-        if($count > 0)
-            $this->error = "Product exists";
-        else if (!isset($this->sku))
-            $this->error = "Product SKU cannot be empty";
+    abstract public function setProduct();
+    
+    protected function validate() {
+        if (!isset($this->sku))
+            return "Product SKU cannot be empty";
         else if (!isset($this->name) || ($this->price < 0))
-            $this->error = "Product name cannot be empty and must be a positive number";
+            return "Product name cannot be empty and must be a positive number";
         else if (!isset($this->price) || !isset($this->name) || !isset($this->sku))
-            $this->error = "Missing required fields";
-
-        $this->check_error();
+            return "Missing required fields";
+        return false;
     }
 
-    protected function preSelect($sql = '', $productParams = [])
-    {        
-        $params = [$this->params, $productParams];
-        $queries = [$this->sql, $sql];
+    protected function save($sql = '', $params2 = []) {
+        
+      $params = [["ssss", $this->sku, $this->name, $this->price, $this->type], $params2];
+      $sqls = ["INSERT INTO products (sku, name, price, type) VALUES (?, ?, ?, ?);", $sql];
 
-        echo "params {.". json_encode($params) . "}";
-        echo "queries {.". json_encode($queries) . "}";
+      foreach($sqls as $index => $sql)
+        $this->create($sql, $params[$index]);
+    }
 
-        foreach ($queries as $index => $query)
+    public function deleteProducts($skus = []) {
+
+        $sql = "DELETE FROM products WHERE sku = ?";
+        foreach($skus as $sku)
         {
-            $param = $params[$index];
-            $this->select($query, $param, true);
+            $params = ["s", $sku];
+            $this->delete($sql, $params);
         }
-
-        return true;
     }
 }

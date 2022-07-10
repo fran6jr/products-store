@@ -5,52 +5,42 @@ class Book extends ProductModel
 {    
     private $weight;
 
+    public function __construct($product) {
+        parent::__construct();
+        $this->sku = isset($product->sku) ? $product->sku : '';
+        $this->type = 'Book';
+        $this->name = isset($product->name) ? $product->name : '';
+        $this->price = isset($product->price) ? $product->price : null;
+        $this->weight = isset($product->weight) ? $product->weight : null;
+    }
+
     protected function validate()
     {
-        $this->check();
+        $error = parent::validate();
+        if ($error != false)
+            return $error;
 
         if (!isset($this->weight))
-        $this->error = "Product must have weight!";
-
-        $this->check_error();
+            return "Product must have weight!";
+        
+        return false;
     }
-    
-    public function getProducts()
-    {
-        $sql = "SELECT p.sku, p.name, p.price, p.type, b.weight FROM products p INNER JOIN book b ON b.sku = p.sku WHERE p.type = 'book';";
+
+    public function getProducts() {
+
+        $sql = "SELECT p.sku, p.name, p.price, p.type, b.weight FROM products p INNER JOIN book b ON b.sku = p.sku WHERE p.type = 'Book';";
         return $this->select($sql);
     }
 
-    public static function filter($var)
-    {
-        return($var->type == 'Book');
-    }
-
-    public function setProduct($product)
-    {   
-        $this->sku = $product->sku;
-        $this->name = $product->name;
-        $this->price = $product->price;
-        $this->type = $product->type;
-        $this->weight = $product->weight;
-        $this->params = ["ssss", $this->sku, $this->name, $this->price, $this->type];
-        $productParams = ["ss", $this->sku, $this->weight];
+    public function setProduct() {
         
+        $error = $this->validate();
+        if ($error != false)
+            throw new Exception($error);
+
         $sql = "INSERT INTO book (sku, weight) VALUES (?, ?);";
+        $param = ["ss", $this->sku, $this->weight];
 
-        $this->validate();
-
-        return $this->preSelect($sql, $productParams);
-    }
-
-    public function delete($skus = [])
-    { 
-        foreach ($skus as $sku) {
-            $sql = "DELETE FROM products, book WHERE sku = ?";
-            $params = ["s", $sku];
-            $this->select($sql, $params, true);
-        }
-
-        return true;
+        $this->save($sql, $param);
     }
 }

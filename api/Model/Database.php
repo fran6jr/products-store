@@ -16,26 +16,39 @@ class Database
         }  
     }
  
-    public function select($query = "", $params = [], $get = false)
+    protected function select($query = "", $params = [])
     {
         try {
             $stmt = $this->executeStatement( $query , $params);
-            if ($get)
-            {
-                $stmt->close();
-                return true;
-            }
-            else
-            {
-                $product = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);               
-                $stmt->close();
-                return $product;
-            }
+    
+            $product = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);               
+            $stmt->close();
+            return $product;
             
         } catch(Exception $e) {
             throw New Exception( $e->getMessage() );
         }
         return false;
+    }
+
+    public function create($query = "", $params = [])
+    {
+        try {
+            $stmt = $this->executeStatement( $query , $params);              
+            $stmt->close();
+        } catch(Exception $e) {
+            throw New Exception( $e->getMessage() );
+        }
+    }
+
+    public function delete($query = "", $params = [])
+    {
+        try {
+            $stmt = $this->executeStatement( $query , $params);              
+            $stmt->close();
+        } catch(Exception $e) {
+            throw New Exception( $e->getMessage() );
+        }
     }
 
     private function executeStatement($query = "", $params = [])
@@ -52,7 +65,7 @@ class Database
                 foreach($params as $key => $value) {
                     $refs[$key] = &$params[$key];
                 }
-                call_user_func_array(array($stmt, 'bind_param'), $refs);
+                call_user_func_array(array($stmt, 'bind_param'), $params);
             }
 
             $stmt->execute();
