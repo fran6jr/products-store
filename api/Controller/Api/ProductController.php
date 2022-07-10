@@ -9,8 +9,8 @@ class ProductController extends BaseController
     public function __construct()
     {
         $this->mappedClasses = array(
-            'Book' => 'Book',
             'DVD' => 'DVD',
+            'Book' => 'Book',
             'Furniture' => 'Furniture'
         );   
     }
