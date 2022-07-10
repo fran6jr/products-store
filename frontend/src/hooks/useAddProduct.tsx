@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Product, ProductType } from "./types"
+import { Product } from "./types"
 
 const baseUrl = process.env.REACT_APP_BASEURL
 
