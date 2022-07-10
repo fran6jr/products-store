@@ -56,7 +56,7 @@ class ProductController extends BaseController
             require_once PROJECT_ROOT_PATH . "/"."Model/ProductModel/". $productType .".php";
             $productModel = new $productType($product);
             $productModel->setProduct();
-            $this->ok('');
+            $this->ok(json_encode(''));
         } catch (Error $e) {
             $this->serverError(json_encode(array('error' => 'Something went wrong!')));
         }
@@ -103,7 +103,7 @@ class ProductController extends BaseController
                 $ProductModel = new $this->mappedClasses[$type]($type);
                 $ProductModel->deleteProducts($skus);
             }
-            $this->ok('');
+            $this->ok(json_encode(''));
         } catch (Error $e) {
             $this->serverError(json_encode(array('error' => 'Something went wrong!')));
         }
