@@ -3,7 +3,7 @@
 header("Access-Control-Allow-Origin: *");
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     
-    $head = array("https://products-store-eta.vercel.app/", "http://localhost:3000");
+    $head = array("https://products-stores.vercel.app/", "http://localhost:3000");
     
     if ((isset($_SERVER['HTTP_ORIGIN'])) && in_array($_SERVER['HTTP_ORIGIN'], $head)) { 
         header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
