@@ -17,4 +17,4 @@ export type Selected =
   type: ProductType
 }
 
-export type ProductType = "dvd" | "book" | "furniture"
+export type ProductType = "Book" | "DVD" | "Furniture"

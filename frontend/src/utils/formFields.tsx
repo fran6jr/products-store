@@ -17,7 +17,15 @@ export type SelectFields = {
 
 export const formFields: ProductForm[] = [
   {
-    type: "dvd",
+    type: "Book",
+    name: 'weight',
+    label: 'Weight (KG)',
+    inputId: 'weight',
+    inputType: 'number',
+    step: "0.01",
+  },
+  {
+    type: "DVD",
     name: 'size',
     label: 'Size (MB)',
     inputId: 'size',
@@ -25,7 +33,7 @@ export const formFields: ProductForm[] = [
     step: "0.01",
   },
   {
-    type: "furniture",
+    type: "Furniture",
     name: 'height',
     label: 'Height (CM)',
     inputId: 'height',
@@ -33,7 +41,7 @@ export const formFields: ProductForm[] = [
     step: "0.01",
   }, 
   {
-    type: "furniture",
+    type: "Furniture",
     name: 'width',
     label: 'Width (CM)',
     inputId: 'width',
@@ -41,18 +49,10 @@ export const formFields: ProductForm[] = [
     step: "0.01",
   },
   {
-    type: "furniture",
+    type: "Furniture",
     name: 'length',
     label: 'Length (CM)',
     inputId: 'length',
-    inputType: 'number',
-    step: "0.01",
-  },
-  {
-    type: "book",
-    name: 'weight',
-    label: 'Weight (KG)',
-    inputId: 'weight',
     inputType: 'number',
     step: "0.01",
   },
@@ -84,18 +84,18 @@ export const selectFields: SelectFields[] = [
       text: "Type Switcher",
   },
   {
+      inputId: "Book",
+      value: "Book",
+      text: "Book"
+  },
+  {
       inputId: "DVD",
-      value: "dvd",
+      value: "DVD",
       text: "DVD"
   },
   {
       inputId: "Furniture",
-      value: "furniture",
+      value: "Furniture",
       text: "Furniture"
-  },
-  {
-      inputId: "Book",
-      value: "book",
-      text: "Book"
   }
 ]
