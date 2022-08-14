@@ -31,5 +31,4 @@ $objFeedController = new ProductController();
 $strMethodName = $uri[3];
 
 $objFeedController->{$strMethodName}();
-
 ?>
