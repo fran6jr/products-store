@@ -32,5 +32,4 @@ $strMethodName = $uri[3];
 
 $objFeedController->{$strMethodName}();
 
-
 ?>
